@@ -39,22 +39,21 @@ Initally go to AWS Management Dashboard and the follow the steps
 8. Refer to the policy in the file "policy.js"
 
 ### Policy.js file
-{
-   "Version": "2008-10-17",
-   "Statement": [
-       {
-           "Effect": "Allow",
-           "Principal": "*",
-           "Action": "s3:GetObject",
-           "Resource": "arn:aws:s3:::yourwebsite/*",
-           "Condition": {
-               "IpAddress": {
-                   "aws:SourceIp": [
-                   "0.0.0.0/32"
-
-              ] 
-            }
-      } 
-    }
-  ] 
-}
+{ <br>
+   "Version": "2008-10-17",<br>
+   "Statement": [<br>
+       {<br>
+           "Effect": "Allow",<br>
+           "Principal": "*",<br>
+           "Action": "s3:GetObject",<br>
+           "Resource": "arn:aws:s3:::yourwebsite/*",<br>
+           "Condition": {<br>
+               "IpAddress": {<br>
+                   "aws:SourceIp": [<br>
+                     "0.0.0.0/32"<br>
+              ]<br>
+            }<br> 
+      }<br>
+    } <br>
+  ]<br>
+}<br>
