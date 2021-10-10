@@ -31,7 +31,7 @@ The Script "upload_website.js" script allows us to upload the website onto the A
 Initally go to AWS Management Dashboard and the follow the steps
 1. Choose Services and search for s3.
 2. Choose Create bucket.
-3. For Bucket name make sure you type in something unique but easy to remember. Example: er-101-2019-05-16-dragon-website
+3. For Bucket name make sure you type in something unique but easy to remember. Example: er-101-2019-05-16-app-store
 4. Leave Block all public access checked.
 5. Choose Create bucket.
 6. Once the bucket is created choose it from the S3 buckets list. 
