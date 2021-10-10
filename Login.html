@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link href="static/img/favicon.ico" rel="shortcut icon"/>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
+
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="static/css/flaticon.css"/>
+    <link rel="stylesheet" href="static/css/slicknav.min.css"/>
+    <link rel="stylesheet" href="static/css/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="static/css/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="static/css/main.css"/>
+
+    <script>
+
+        function Vendor() {
+
+        	window.location.replace("vendor.html");
+
+            $("#shop_button").css('visibility', 'visible')
+                .click( function () {
+                    window.location.replace("vendor.html") ;
+                })
+        }
+
+        function customer() {
+
+        	window.location.replace("index.html");
+
+            $("#cust_button").css('visibility', 'visible')
+                .click(function () {
+                    window.location.replace("customer.html") ;
+                })
+        }
+
+        function check(){
+            auth.onAuthStateChanged(function (user){
+                if(user) {
+                    const id = user.uid;
+
+                    localStorage.setItem("current_user", id);
+
+                    var role = localStorage.getItem("role");
+                    if (role == "Vendor") {
+                        db.collection("stores").doc(id).get().then(function (doc) {
+                            if ((doc.data().role) == "Vendor") {
+                                Vendor();
+                            }
+                        });
+                    }
+
+                    if (role == "Customer") {
+                        db.collection("Customer").doc(id).get().then(function (doc) {
+                            if ((doc.data().role) == "Customer") {
+                                customer();
+                            }
+                        });
+                    }
+
+
+                    $("#login").css('visibility', 'hidden');
+                    $("#create").css('visibility', 'hidden') ;
+                    $("#logout").css('visibility', 'visible').click(function () {
+                        auth.signOut().then(function () {
+                            // Sign-out successful.
+                        }).catch(function (error) {
+                            alert(error);
+                        });
+                    });
+                }
+                else{
+                    console.log("no user") ;
+                }
+            });
+        }
+    </script>
+
+
+    <script>
+        var errorMessage ;
+
+        function authenticate() {
+            var email = document.forms["login"]["email"].value;
+            var password = document.forms["login"]["pswd"].value;
+            var role= document.forms["login"]["role"].value;
+
+            localStorage.setItem("role", role);  /* storing role in local storage */
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .catch(function (error) {
+                    // Handle Errors here.
+                    var errorCode = error.code;
+                    errorMessage = error.message;
+                    console.log(errorMessage);
+                }).then( function () {
+                if(!errorMessage) {
+                    //window.location.replace("index.html");
+                    check();
+                }
+                else {
+                    alert("error") ;
+                }
+            });
+        }
+
+    </script>
+
+</head>
+<body onload="check()">
+
+
+<!-- Header section -->
+<header class="header-section">
+        <div class="header-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2 text-center text-lg-left">
+                        <!-- logo -->
+                        <a href="./index.html" class="site-logo">
+                            <h3 style="padding-top: 10px">App Store</h3>
+                        </a>
+                    </div>
+                    <div class="col-xl-5 col-lg-4">
+                        <form  name="SEARCH" class="header-search-form" >
+                            <input type="text" id="searchText" placeholder="Search">
+                            <button onclick="getSearchResults()"><i class="flaticon-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="col-xl-5 col-lg-6">
+                        <div class="user-panel">
+                            <div class="up-item">
+                                <i class="flaticon-profile"></i>
+                                <a href="Login.html" id="login">Sign In </a><a href="index.html" id="logout" style="visibility: hidden">Sign Out </a>or <a href="signup.html">Create Account</a>
+                            </div>
+                            <div class="up-item">
+                                <a href="#" id="cust_button" style="visibility: hidden">&ensp; Customer Account</a>
+                                <a href="vendor.html" id="shop_button" style="visibility: hidden">Vendor Account</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<br><br>
+<!-- Header section end -->
+
+
+<div class="container">
+    <h2>Login Form</h2> <br>
+    <form name="login" method="post">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd">
+        </div>
+        <div class="form-group">
+            <label for="role">Select Role:</label>
+            <select class="form-control" id="role" name="role">
+                <option>Customer</option>
+                <option>Vendor</option>
+
+            </select> 
+        </div>
+        <button type="button" class="btn btn-primary" onclick="authenticate()">Submit</button><br><br>
+        <span><h4>Don't have an account? </h4><a href="SignUp.html">Sign Up</a></span>
+    </form>
+</div>
+<br><br>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+
+    <script>
+        var config = {
+            apiKey: "AIzaSyCh2wAXXHaNWJ1Pfl_felkGxVGErmVqltw",
+            authDomain: "playstore-9d4f2.firebaseapp.com",
+            databaseURL: "https://playstore-9d4f2.firebaseio.com",
+            projectId: "playstore-9d4f2",
+            storageBucket: "playstore-9d4f2.appspot.com",
+            messagingSenderId: "140021915249",
+            appId: "1:140021915249:web:f7ed00f58a26211bae85d0",
+            measurementId: "G-0DVNLQWCT6"
+        };
+
+        firebase.initializeApp(config);
+        var db = firebase.firestore();
+        var auth = firebase.auth() ;
+
+    </script>
+</body>
+</html>

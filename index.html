@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<title>App Store</title>
+	<meta charset="UTF-8">
+	<meta name="description" content=" App Store">
+	<meta name="keywords" content="playstore, appstore, getapps">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->
+	<link href="static/img/favicon.ico" rel="shortcut icon"/>
+
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
+
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="static/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="static/css/flaticon.css"/>
+	<link rel="stylesheet" href="static/css/slicknav.min.css"/>
+	<link rel="stylesheet" href="static/css/jquery-ui.min.css"/>
+	<link rel="stylesheet" href="static/css/owl.carousel.min.css"/>
+	<link rel="stylesheet" href="static/css/main.css"/>
+
+	<script>
+		function check(){
+			console.log("page checked");
+		}
+
+		function getSearchResults(){
+			console.log("Got results");
+		}
+
+	</script>
+
+
+	<style type="text/css">
+
+	.section-header{
+		text-align: center;
+		margin-bottom: 50px;
+	}	
+
+      .overlay {
+        border-radius: 21px 21px 0 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: rgb(65,75,89);
+        }
+
+        .hoverImage {
+          width: 500px;
+          height: 100%;
+          border-radius: 21px 21px 0 0;
+        }
+
+        .hoverImageContainer:hover .overlay {
+          opacity: 0.5; 
+        }
+
+        .hoverImageContainer {
+        position: relative;
+        width: 100%; 
+        height: 300px;
+        border-radius: 21px 21px 0 0;
+        }
+
+        .replaceText {
+          color: white;
+          font-size: 25px;
+          position: absolute;
+          top: 90%;
+          left: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          text-align: center;
+        }
+
+        .accountType{
+        	visibility: hidden; 
+        	background-color: red; 
+        	color: white; 
+        	border-radius: 12px;
+        	visibility: hidden;
+        }
+
+	</style>
+
+
+</head>
+
+
+    <script>
+
+        function Vendor() {
+
+        	//window.location.replace("vendor.html");
+
+            $("#shop_button").css('visibility', 'visible')
+                .click( function () {
+                    window.location.replace("vendor.html") ;
+                })
+        }
+
+        function customer() {
+
+        	//window.location.replace("index.html");
+
+            $("#cust_button").css('visibility', 'visible')
+                .click(function () {
+                    window.location.replace("customer.html") ;
+                })
+        }
+
+        function check(){
+            auth.onAuthStateChanged(function (user){
+                if(user) {
+                    const id = user.uid;
+
+                    localStorage.setItem("current_user", id);
+
+                    var role = localStorage.getItem("role");
+                    if (role == "Vendor") {
+                        db.collection("stores").doc(id).get().then(function (doc) {
+                            if ((doc.data().role) == "Vendor") {
+                                Vendor();
+                            }
+                        });
+                    }
+
+                    if (role == "Customer") {
+                        db.collection("Customer").doc(id).get().then(function (doc) {
+                            if ((doc.data().role) == "Customer") {
+                                customer();
+                            }
+                        });
+                    }
+
+
+                    $("#login").css('visibility', 'hidden');
+                    $("#create").css('visibility', 'hidden') ;
+                    $("#logout").css('visibility', 'visible').click(function () {
+                        auth.signOut().then(function () {
+                            // Sign-out successful.
+                        }).catch(function (error) {
+                            alert(error);
+                        });
+                    });
+                }
+                else{
+                    console.log("no user") ;
+                }
+            });
+        }
+    </script>
+
+<body onload="check()">
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<!-- Header section -->
+
+	<header class="header-section">
+		<div class="header-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-2 text-center text-lg-left">
+						<!-- logo -->
+						<a href="./index.html" class="site-logo">
+                            <h3 style="padding-top: 10px">App Store</h3>
+						</a>
+					</div>
+					<div class="col-xl-5 col-lg-4">
+						<form  name="SEARCH" class="header-search-form" >
+							<input type="text" id="searchText" placeholder="Search">
+							<button onclick="getSearchResults()"><i class="flaticon-search"></i></button>
+						</form>
+					</div>
+					<div class="col-xl-5 col-lg-6">
+						<div class="user-panel">
+							<div class="up-item">
+								<i class="flaticon-profile"></i>
+								<a href="Login.html" id="login">Sign In </a><a href="index.html" id="logout" style="visibility: hidden">Sign Out </a>or <a href="signup.html">Create Account</a>
+							</div>
+							<div class="up-item">
+								<a href="#" id="cust_button" class="accountType" style="color: white">Customer Account </a>
+								<a href="vendor.html" id="shop_button" class ="accountType" style="color: white;">&nbsp;Vendor Account&nbsp;</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<nav class="main-navbar">
+			<div class="container">
+				<!-- menu -->
+				<ul class="main-menu">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="games.html">Games</a></li> 
+					<li><a href="apps.html">Apps</a></li> 
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<!-- header section end -->
+
+
+	<!-- carousel setion start -->
+	<section class="hero-section">
+		<div class="hero-slider owl-carousel">
+			<div class="hs-item set-bg" data-setbg="static/img/carousel1.jpg">
+				<div class="container">
+					<div class="row">
+						<div class="col-xl-6 col-lg-7 text-white">
+							<h2>Try our new Fitness App</h2>
+							<a href="allProducts.html" class="site-btn sb-white">DISCOVER</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="hs-item set-bg" data-setbg="static/img/carousel2.jpg">
+				<div class="container">
+					<div class="row">
+						<div class="col-xl-6 col-lg-7 text-white">
+							<h2>Learn  cooking from the best</h2>
+							<a href="allProducts.html" class="site-btn sb-white">DISCOVER</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="hs-item set-bg" data-setbg="static/img/carousel3.jpg">
+			</div>
+		</div>
+		<div class="container">
+			<div class="slide-num-holder" id="snh-1"></div>
+		</div>
+	</section>
+	<!-- carousel section end -->
+
+	<section class="top-letest-product-section">
+		<div class="container">
+			<div>
+				<h2 class="section-header">Top Free Apps</h2>
+			</div>
+
+			<div class="product-slider owl-carousel">
+
+				<div class="product-item">
+					<div class="pi-pic">
+						<img src="./static/img/topfree/insta.png" alt="">
+					</div>
+					<div class="pi-text">
+						<h6>Free</h6>
+						<p>Instagram</p>
+					</div>
+				</div>
+
+				<div class="product-item">
+					<div class="pi-pic">
+						<div class="tag-new">New</div>
+						<img src="./static/img/topfree/whatsapp.png" alt="">
+					</div>
+					<div class="pi-text">
+						<h6>Free</h6>
+						<p>Whatsapp</p>
+					</div>
+				</div>
+
+				<div class="product-item">
+					<div class="pi-pic">
+						<img src="./static/img/topfree/facebook.png" alt="">
+
+					</div>
+					<div class="pi-text">
+						<h6>Free</h6>
+						<p>Facebook </p>
+					</div>
+				</div>
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/topfree/snapchat.jpg" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>Free</h6>
+							<p>Snapchat</p>
+						</div>
+					</div>
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/topfree/candycrush.png" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>Free</h6>
+							<p>Candy Crush </p>
+						</div>
+				</div>
+
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/topfree/word.jpg" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>Free</h6>
+							<p>Microsoft Word</p>
+						</div>
+				</div>
+
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/topfree/excel.png" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>Free</h6>
+							<p>Microsoft Excel</p>
+						</div>
+				</div>
+
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/topfree/powerpoint.png" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>Free</h6>
+							<p>Microsoft PowerPoint</p>
+						</div>
+				</div>
+
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/topfree/mx.png" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>Free</h6>
+							<p>MX Player</p>
+						</div>
+				</div>				
+
+			</div>
+		</div>
+	</section>
+
+	<!-- notes app section -->
+	<section class="top-letest-product-section">
+		<div class="container">
+			<div>
+				<h2 class="section-header">Take Note of these Notes App</h2>
+			</div>
+
+			<div class="product-slider owl-carousel">
+				<div class="product-item">
+					<div class="pi-pic">
+						<img src="./static/img/notes/1.jpg" alt="">
+					</div>
+					<div class="pi-text">
+						<h6>$35,00</h6>
+						<p>Evernote 2</p>
+					</div>
+				</div>
+
+				<div class="product-item">
+					<div class="pi-pic">
+						<div class="tag-new">New</div>
+						<img src="./static/img/notes/2.jpg" alt="">
+					</div>
+					<div class="pi-text">
+						<h6>$50,00</h6>
+						<p>Jounral-ism</p>
+					</div>
+				</div>
+
+				<div class="product-item">
+					<div class="pi-pic">
+						<img src="./static/img/notes/3.jpg" alt="">
+
+					</div>
+					<div class="pi-text">
+						<h6>Free</h6>
+						<p>Stay Organised</p>
+					</div>
+				</div>
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/notes/4.jpg" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>Free</h6>
+							<p>Stay Ahead: Planner</p>
+						</div>
+					</div>
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/notes/5.jpg" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>$10,00</h6>
+							<p>Voice Notes</p>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- notes app section end -->
+
+	<div>
+		<h1 class="section-header">Featured Games</h1>	
+	</div>
+
+	<section>
+		<div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+	          <div class="my-3 p-3">
+	            <h2 class="display-5">Need For Speed:<br>Rivals</h2>
+	            <p class="lead">An amazing graphic game. It is so graphic-intensive that you'll want to play everyday</p>
+	            <a href="#"> Play Game ></a> &nbsp; &nbsp; &nbsp; <a href="#">See live match > </a>
+	          </div>
+	          <div class="bg-white shadow-sm mx-auto" style="width:30%; height: 300px; border-radius: 21px 21px 0 0;">
+	            <a href="#">
+	              <div class="hoverImageContainer">
+	                <img class="hoverImage" style="height: 100%;" src="static/img/games/nfs_rivals.jpg">
+	                <div class="overlay">
+	                    <div class="replaceText">Play</div>
+	                </div>
+	              </div>
+	            </a>
+	          </div>
+	        </div>	
+	</section>
+
+	<section>
+	      <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
+	        <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+	          <div class="my-3 p-3">
+	            <h2 class="display-5">PUBG<br>Shooting</h2>
+	            <p class="lead">#1 Game of all time</p>
+	            <a href="#"> Play Game ></a> &nbsp; &nbsp; &nbsp; <a href="#">See live match > </a>
+	          </div>
+	          <div class="bg-white shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+	          <a href="#">
+	              <div class="hoverImageContainer">
+	                <img class="hoverImage" src="static/img/games/pubg.jpg">
+	                <div class="overlay">
+	                    <div class="replaceText">Play</div>
+	                </div>
+	              </div>
+	            </a>
+	          </div>
+	        </div>
+
+	        <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+	          <div class="my-3 p-3">
+	            <h2 class="display-5">Counter-Strike:<br>GO</h2>
+	            <p class="lead">Award winning muilt-player shooting game</p>
+	            <a href="#"> Play Game ></a> &nbsp; &nbsp; &nbsp; <a href="#">See live match > </a>
+	          </div>
+	          <div class="bg-white shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+	          <a href="#">
+	              <div class="hoverImageContainer">
+	                <img class="hoverImage" src="static/img/games/csgo.jpg">
+	                <div class="overlay">
+	                    <div class="replaceText">Play</div>
+	                </div>
+	              </div>
+	            </a>
+	          </div>
+	        </div>
+
+	        <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+	          <div class="my-3 p-3">
+	            <h2 class="display-5">Valorant<br>Gaming</h2>
+	            <p class="lead">A addictive game FPS online shooter game</p>
+	            <a href="#"> Play Game ></a> &nbsp; &nbsp; &nbsp; <a href="#">See live match > </a>
+	          </div>
+	          <div class="bg-white shadow-sm mx-auto" style="width: 50%; height: 300px; border-radius: 21px 21px 0 0;">
+	            <a href="#">
+	              <div class="hoverImageContainer">
+	                <img class="hoverImage" src="static/img/games/valorant.png">
+	                <div class="overlay">
+	                    <div class="replaceText">Play</div>
+	                </div>
+	              </div>
+	            </a>
+	          </div>
+	        </div>	
+	</section>
+
+
+	<!-- notes app section -->
+	<section class="top-letest-product-section">
+		<div class="container">
+			<div>
+				<h2 class="section-header">Editor's Choice</h2>
+			</div>
+
+			<div class="product-slider owl-carousel">
+				<div class="product-item">
+					<div class="pi-pic">
+						<img src="./static/img/editor/lr.png" alt="">
+					</div>
+					<div class="pi-text">
+						<h6>FREE</h6>
+						<p>Adobe Lightroom</p>
+					</div>
+				</div>
+
+				<div class="product-item">
+					<div class="pi-pic">
+						<div class="tag-new">New</div>
+						<img src="./static/img/editor/bear.jpeg" alt="">
+					</div>
+					<div class="pi-text">
+						<h6>FREE</h6>
+						<p>Bear</p>
+					</div>
+				</div>
+
+				<div class="product-item">
+					<div class="pi-pic">
+						<img src="./static/img/editor/civ.jpg" alt="">
+
+					</div>
+					<div class="pi-text">
+						<h6>$80</h6>
+						<p>Civilization VI</p>
+					</div>
+				</div>
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/editor/pap.png" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>$50</h6>
+							<p>Paprika Recipe Manager 3</p>
+						</div>
+					</div>
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/editor/oldman.jpg" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>$40</h6>
+							<p>Old Man's Adventure</p>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- notes app section end -->
+
+	<!-- Footer -->
+
+	<footer class="container py-5">
+        <p>
+        	<div class="text-center pt-5">
+				<a href="#"><button class="site-btn sb-line sb-dark">&nbsp;&nbsp;&nbsp;Redeem&nbsp;&nbsp;&nbsp;</button></a>
+
+				<a href="#"><button class="site-btn sb-line sb-dark">Add Funds</button></a>
+			</div>
+        	<br><br><br>
+        	<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-slash-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm9.854 4.854a.5.5 0 0 0-.708-.708l-7 7a.5.5 0 0 0 .708.708l7-7z"/></svg> Coded by Deepak Honakeri.<br>Inspired by Apple.<br>
+
+    	</p>
+    </footer>
+
+
+	<!--====== Javascripts & Jquery ======-->
+	<script src="static/js/jquery-3.2.1.min.js"></script>
+	<script src="static/js/bootstrap/bootstrap.min.js"></script>
+	<script src="static/js/jquery.slicknav.min.js"></script>
+	<script src="static/js/owl.carousel.min.js"></script>
+	<script src="static/js/jquery.nicescroll.min.js"></script>
+	<script src="static/js/jquery.zoom.min.js"></script>
+	<script src="static/js/jquery-ui.min.js"></script>
+	<script src="static/js/main.js"></script>
+
+
+	<!-- Firebase -->
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-storage.js"></script>
+
+	<script>
+		var config = {
+		    apiKey: "AIzaSyCh2wAXXHaNWJ1Pfl_felkGxVGErmVqltw",
+		    authDomain: "playstore-9d4f2.firebaseapp.com",
+		    databaseURL: "https://playstore-9d4f2.firebaseio.com",
+		    projectId: "playstore-9d4f2",
+		    storageBucket: "playstore-9d4f2.appspot.com",
+		    messagingSenderId: "140021915249",
+		    appId: "1:140021915249:web:f7ed00f58a26211bae85d0",
+		    measurementId: "G-0DVNLQWCT6"
+		};
+
+		firebase.initializeApp(config);
+		var db = firebase.firestore();
+		var auth = firebase.auth() ;
+		var storageRef = firebase.storage().ref();
+
+	</script>
+
+	</body>
+</html>

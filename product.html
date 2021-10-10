@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<title>Product</title>
+	<meta charset="UTF-8">
+	<meta name="description" content=" GYM-startup | eCommerce Website">
+	<meta name="keywords" content="GYM-startup, eCommerce, creative, html">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->
+	<link href="static/img/favicon.ico" rel="shortcut icon"/>
+
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
+
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="static/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="static/css/flaticon.css"/>
+	<link rel="stylesheet" href="static/css/slicknav.min.css"/>
+	<link rel="stylesheet" href="static/css/jquery-ui.min.css"/>
+	<link rel="stylesheet" href="static/css/owl.carousel.min.css"/>
+	<link rel="stylesheet" href="static/css/main.css"/>
+
+
+	<script>
+		var id = localStorage.getItem("id").toString() ;
+		var name;
+		var price ;
+		var urls ;
+		var type ;
+		var store_name ;
+		var area ;
+		var storeID;
+
+		$(document).ready(function () {
+			$("#header").load("header.html");
+            db.collection("apps").doc(id).get().then(function (doc) {
+                document.getElementById("title").innerHTML = doc.data().appName ;
+                name = doc.data().appName  ;
+                document.getElementById("price").innerHTML = '&#8377;'+ doc.data().appPrice;
+				price = doc.data().appPrice ;
+                type = doc.data().appType ;
+                storeID = doc.data().user;
+				storageRef.child(type+'/'+doc.id+'/'+doc.data().fileName)
+                    .getDownloadURL().then(function (url) {
+                        document.getElementById("prd_image").src = url.toString() ;
+            			urls = url.toString() ;
+                    })
+            });
+
+		});
+
+		function orderApp() {
+				var currentUserID = localStorage.getItem("current_user");
+
+				db.collection('stores').where("uid","==",storeID).get().then(function (snapshot) {
+				snapshot.docs.forEach(function (doc) {
+
+						db.collection("orders").add({
+							appID: id , 
+							appName: name, 
+							appPrice: price, 
+							url: urls,
+							userID : currentUserID,
+							storeName : doc.data().storeName
+						}).then(function () {
+                    		alert("App purchased and downloading!") ;
+                    
+                		}) ;
+					})
+
+				});			
+
+				
+		}
+		/*
+			 	user: currentUser, 
+				name: name, 
+				price: price, 
+				url: urls, 
+				storeName: storeName
+		*/
+
+	</script>
+
+
+	<style type="text/css">
+		
+		.productImg{
+			width: 300px;
+			height: 300px;
+		}
+
+	</style>
+
+</head>
+<body >
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+
+	<!-- Header section -->
+	<header class="header-section">
+		<div class="header-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-2 text-center text-lg-left">
+						<!-- logo -->
+						<a href="./index.html" class="site-logo">
+                            <h3 style="padding-top: 10px">App Store</h3>
+						</a>
+					</div>
+					<div class="col-xl-5 col-lg-4">
+						<form  name="SEARCH" class="header-search-form" >
+							<input type="text" id="searchText" placeholder="Search">
+							<button onclick="getSearchResults()"><i class="flaticon-search"></i></button>
+						</form>
+					</div>
+					<div class="col-xl-5 col-lg-6">
+						<div class="user-panel">
+							<div class="up-item">
+								<i class="flaticon-profile"></i>
+								<a href="Login.html" id="login">Sign In </a><a href="index.html" id="logout" style="visibility: hidden">Sign Out </a>or <a href="signup.html">Create Account</a>
+							</div>
+							<div class="up-item">
+								<a href="#" id="cust_button" style="visibility: hidden">&ensp; Profile </a>
+								<a href="vendor.html" id="shop_button" style="visibility: hidden">Vendor</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<nav class="main-navbar">
+			<div class="container">
+				<!-- menu -->
+				<ul class="main-menu">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="games.html">Games</a></li> 
+					<li><a href="apps.html">Apps</a></li> 
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<!-- Header section end -->
+
+
+	<!-- Page info -->
+	<div class="page-top-info">
+		<div class="container">
+			<h2 id="title"></h2>
+			<h3 class="p-price" id="price"></h3>
+		</div>
+	</div>
+	<!-- Page info end -->
+
+
+	<!-- product section -->
+	<section class="product-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="product-pic-zoom">
+						<img style="width: 600px;height:600px" class="product-big-img" id="prd_image" src="" alt="">
+					</div>
+				</div>
+				<div class="col-lg-6 product-details">
+					<p> <h5> Donwload Size : </h4> <label>560MB</label> </p>
+
+					<div class="p-rating">
+						<i class="fa fa-star-o"></i>
+						<i class="fa fa-star-o"></i>
+						<i class="fa fa-star-o"></i>
+						<i class="fa fa-star-o"></i>
+						<i class="fa fa-star-o fa-fade"></i>
+					</div>
+					<div class="p-review">
+						<a href="">3 reviews</a>|<a href="">Add your review</a>
+					</div>
+						
+					
+					<a href="#" onclick="orderApp()" class="site-btn">GET App</a>
+					<div id="accordion" class="accordion-area">
+						<div class="panel">
+							<div class="panel-header" id="headingOne">
+								<button class="panel-link active" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">information</button>
+							</div>
+							<div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+								<div class="panel-body">
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
+									<p>Approx length 66cm/26" (Based on a UK size 8 sample)</p>
+									<p>Mixed fibres</p>
+									<p>The Model wears a UK size 8/ EU size 36/ US size 4 and her height is 5'8"</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- product section end -->
+
+
+	<!-- RELATED PRODUCTS section -->
+	<section class="related-product-section">
+		<div class="container">
+			<div class="section-title">
+				<h2>RELATED APPS</h2>
+			</div>
+
+			<div class="product-slider owl-carousel">
+				<div class="product-item">
+					<div class="pi-pic">
+						<img src="./static/img/notes/1.jpg" alt="">
+					</div>
+					<div class="pi-text">
+						<h6>$35,00</h6>
+						<p>Evernote 2</p>
+					</div>
+				</div>
+
+				<div class="product-item">
+					<div class="pi-pic">
+						<div class="tag-new">New</div>
+						<img src="./static/img/notes/2.jpg" alt="">
+					</div>
+					<div class="pi-text">
+						<h6>$50,00</h6>
+						<p>Jounral-ism</p>
+					</div>
+				</div>
+
+				<div class="product-item">
+					<div class="pi-pic">
+						<img src="./static/img/notes/3.jpg" alt="">
+
+					</div>
+					<div class="pi-text">
+						<h6>Free</h6>
+						<p>Stay Organised</p>
+					</div>
+				</div>
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/notes/4.jpg" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>Free</h6>
+							<p>Stay Ahead: Planner</p>
+						</div>
+					</div>
+				<div class="product-item">
+						<div class="pi-pic">
+							<img src="./static/img/notes/5.jpg" alt="">
+						</div>
+						<div class="pi-text">
+							<h6>$10,00</h6>
+							<p>Voice Notes</p>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- RELATED PRODUCTS section end -->
+
+
+	<!-- Footer section -->
+	<footer class="container py-5">
+        <p>
+        	<div class="text-center pt-5">
+				<a href="#"><button class="site-btn sb-line sb-dark">&nbsp;&nbsp;&nbsp;Redeem&nbsp;&nbsp;&nbsp;</button></a>
+
+				<a href="#"><button class="site-btn sb-line sb-dark">Add Funds</button></a>
+			</div>
+        	<br><br><br>
+        	<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-slash-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm9.854 4.854a.5.5 0 0 0-.708-.708l-7 7a.5.5 0 0 0 .708.708l7-7z"/></svg> Coded by Deepak Honakeri.<br>Inspired by Apple.<br>
+
+    	</p>
+    </footer>
+	<!-- Footer section end -->
+
+
+
+	<!--====== Javascripts & Jquery ======-->
+	<script src="static/js/jquery-3.2.1.min.js"></script>
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src="static/js/jquery.slicknav.min.js"></script>
+	<script src="static/js/owl.carousel.min.js"></script>
+	<script src="static/js/jquery.nicescroll.min.js"></script>
+	<script src="static/js/jquery.zoom.min.js"></script>
+	<script src="static/js/jquery-ui.min.js"></script>
+	<script src="static/js/main.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-storage.js"></script>
+
+	<script>
+		var config = {
+		    apiKey: "AIzaSyCh2wAXXHaNWJ1Pfl_felkGxVGErmVqltw",
+		    authDomain: "playstore-9d4f2.firebaseapp.com",
+		    databaseURL: "https://playstore-9d4f2.firebaseio.com",
+		    projectId: "playstore-9d4f2",
+		    storageBucket: "playstore-9d4f2.appspot.com",
+		    messagingSenderId: "140021915249",
+		    appId: "1:140021915249:web:f7ed00f58a26211bae85d0",
+		    measurementId: "G-0DVNLQWCT6"
+		};
+
+		firebase.initializeApp(config);
+		var db = firebase.firestore();
+		var auth = firebase.auth() ;
+		var storageRef = firebase.storage().ref() ;
+
+
+	</script>
+	</body>
+</html>

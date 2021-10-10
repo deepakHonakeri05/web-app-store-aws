@@ -1,0 +1,25 @@
+
+Javascript concepts
+
+	- Local storage
+		- send data from one page to another page
+		- store user Information like ID, role
+
+
+	- Firebase JS 
+		- To store and retrieve data like images, title, and description
+		- used JSON to send and retrieve objects
+
+
+
+HTML concepts
+
+	- Used HTML forms, card templates, semantic tags(footer, header, articles)
+	- Used files to upload to the database
+
+
+CSS Concepts
+
+	- Animations on loading screen
+	- Rellax JS for "scrolling effect"
+	- Used owl carousel library to stack up elements 
