@@ -65,7 +65,7 @@
     </style>
 
     <script>
-
+//based on the results of the Authentication, we change the window/ display the appropriate page according to the user
         function shopkeeper() {
             window.location.replace("index.html");
         }
@@ -134,6 +134,14 @@
             document.getElementsByTagName("BODY")[0].style.display = "none";
         });
 
+
+        /*
+        
+            Fetches the items or images from the Firabse Storage ain the form of JSON.
+            The fetched data is populated into a dynamically created TABLE.
+
+
+        */
         function getOrders() {
 
            var allItems =[] ;

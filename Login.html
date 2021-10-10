@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="static/css/main.css"/>
 
     <script>
-
+        //based on the results of the Authentication, we change the window/ display the appropriate page according to the user
         function Vendor() {
 
         	window.location.replace("vendor.html");
@@ -90,6 +90,12 @@
     <script>
         var errorMessage ;
 
+        /*
+
+            Uses firebase Email authentication method to check the credentials of the user
+
+             
+        */
         function authenticate() {
             var email = document.forms["login"]["email"].value;
             var password = document.forms["login"]["pswd"].value;

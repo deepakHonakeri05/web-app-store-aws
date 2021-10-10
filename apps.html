@@ -34,7 +34,11 @@
             window.location.replace("product.html") ;
         }
 
+        /* 
 
+        	Dynamically creating cards (arbitary numbers) using Javascript and popluating it into the HTML document.
+
+        */	
 		function createCard(cardData) {
 			var cardTemplate = [
 				'<div class="col-lg-3 col-sm-6">',
@@ -66,6 +70,11 @@
 		var data = [];
 
 		var cards = $();
+
+		/*
+			Fetches the items or images from the Firabse Storage ain the form of JSON, and dynamically creating the card and popluating it.
+
+		*/
 
 		function fetch(appCategory, appTag) {
 			var test ;
@@ -124,6 +133,8 @@
 	<div id="preloder">
 		<div class="loader"></div>
 	</div>
+
+<!-- NAvbar and header -->
 
 	<header class="header-section">
 		<div class="header-top">

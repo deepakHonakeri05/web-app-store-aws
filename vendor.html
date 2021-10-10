@@ -40,6 +40,8 @@
 
     <script>
 
+        //based on the results of the Authentication, we change the window/ display the appropriate page according to the user
+
         function Vendor() {
             $("#shop_button").css('visibility', 'visible')
                 .click( function () {
@@ -97,6 +99,15 @@
     </script>
 
     <script>
+
+        /*
+        
+            Collect the data from the HTML form and populates the Databse using JSON format
+            
+        */
+
+
+
         var file ;
         var reader ;
         var fileName;
@@ -127,7 +138,13 @@
                 });
         }
 
-        function previewFile() { //function for displaying the image file to the user
+
+        /* 
+            function for displaying the image file to the user
+
+        */
+
+        function previewFile() { 
             reader = new FileReader();
             file = document.querySelector('input[type=file]').files[0];
             fileName= file.name ;
@@ -149,6 +166,15 @@
         var items = [] ;
 
         var changes= [] ;
+
+
+        /*
+        
+            Fetches the items or images from the Firabse Storage ain the form of JSON.
+            The fetched data is populated into a dynamically created TABLE.
+
+
+        */
 
        function allItems(){ // to make it easier to loop through the array and put it in a template of a row, we are using arrays
             db.collection("apps").where("user","==",id).get().then(function (snapshot) {

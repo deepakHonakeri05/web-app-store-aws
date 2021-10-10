@@ -16,6 +16,7 @@
 
 <script>
 
+    //hides the icons from the menubar
     function hide(){
         var user = document.getElementById("role").options[document.getElementById("role").selectedIndex].value ;
         if(user!="Vendor"){
@@ -26,6 +27,8 @@
         }
     }
 
+
+    //authemticate the user with firebase auth method using JSON
     function authenticate() {
         var email = document.forms["SignUp"]["email"].value;
         var password = document.forms["SignUp"]["pswd"].value;
