@@ -46,7 +46,7 @@ Initally go to AWS Management Dashboard and the follow the steps
            "Effect": "Allow",<br>
            "Principal": "*",<br>
            "Action": "s3:GetObject",<br>
-           "Resource": "arn:aws:s3:::yourwebsite/*",<br>
+           "Resource": "arn:aws:s3:::your_bucket_name/*",<br>
            "Condition": {<br>
                "IpAddress": {<br>
                    "aws:SourceIp": [<br>
@@ -57,3 +57,5 @@ Initally go to AWS Management Dashboard and the follow the steps
     } <br>
   ]<br>
 }<br>
+
+Please excuse the indentation of of the above code (It's best to refer in policy.js file)
