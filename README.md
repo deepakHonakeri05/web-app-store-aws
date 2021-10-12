@@ -4,20 +4,18 @@ Here's a Demo of the Code :
 
 http://myappleappstore.s3-website-us-east-1.amazonaws.com
 
-## Overview and History
+## Overview
 
-Initially this website had all the images and JSON files in the amazon S3 bucket. And I referenced all the resources with a relative path ("./"). Finally, as a learning curve I moved the images, JSON and product information to Firebase (BaaS) whcih also makes use of Javascript.
-
-The Website is built on 
+This web app is static website hosted on amazon AWS S3. The Website is built on 
  1. HTML5
  2. CSS3
  3. BootStrap v4
  4. AJAX
  5. Javascript
 
-## Purpose
+## Purpose of the project
 
-The purpose of this project was to become familiar with using the Cloud9 console, using Node.js to upload the files to Amazon S3 bucket, experimenting with Amazon AWS's S3 bucket storage and becoming an expert in Javascript.
+The purpose of this project was to become familiar with using the Cloud9 console, coding a Node.js script to upload the files to Amazon S3 bucket, experimenting with Amazon AWS's S3 bucket storage and becoming an expert in JavaScript.
 
 [Edit 1]:
 
